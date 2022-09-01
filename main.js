@@ -11,9 +11,15 @@ const game = document.querySelector('#game'),
       maxNum = parseInt(document.querySelector('.max-num').innerHTML),
       guessInput = document.querySelector('#guess-input'),
       paraMessage = document.querySelector('.message'),
-      submitBtn = document.querySelector('#guess-value');
+      submitBtn = document.querySelector('#guess-value'),
+      newGameBtn = document.querySelector('#new-game');
 
-let correctGuess = Math.floor(Math.random() * 100) + 1;
+newGameBtn.style.display = 'none';
+
+let correctGuess = Math.floor(Math.random() * 100) + 1,
+    counter = 4;
+    
+
 console.log(correctGuess);
 
 guessInput.focus();
@@ -33,29 +39,65 @@ guessInput.focus();
 
 // generateNumbers();
 
+
+//Function to show response and feedback
 function showResponse(message, color){
   paraMessage.textContent = message;
   paraMessage.style.backgroundColor = color;
 }
 
-submitBtn.addEventListener('click', checkGuess);
+//function to reset game
+function resetGame(){
+  guessInput.disabled = true;
+  submitBtn.disabled = true;
 
+  newGameBtn.style.display = 'block';
+
+  newGameBtn.addEventListener('click', startNewGame);
+
+  function startNewGame(ev){
+    newGameBtn.style.display = 'none';
+    guessInput.value = '';
+    guessInput.disabled = false;
+    submitBtn.disabled = false;
+
+    counter = 4;
+    paraMessage.textContent ='';
+    correctGuess = Math.floor(Math.random() * 100) + 1;
+
+    ev.preventDefault();
+  }
+  
+ 
+  
+
+}
+
+submitBtn.addEventListener('click', checkGuess);
 function checkGuess(ev){
   let userGuess = parseInt(guessInput.value);
+      
 
-  if(userGuess === correctGuess) {
-    showResponse('Congrats! you got that right!', 'Green');
-  } else if (userGuess<minNum || userGuess>maxNum) {
-    showResponse('Wrong. Please enter a number within the limits', 'Red');
-  } else {
-    if(userGuess<correctGuess){
-      showResponse('Wrong. Your guess is too low. Try again', 'Red')
-    } else if (userGuess>correctGuess){
-      showResponse('Wrong. Your guess is too high. Try again', 'Red')
+    if(userGuess === correctGuess) {
+      showResponse('Congrats! you got that right!', 'Green');
+      resetGame();
+    } else {
+      
+      if(userGuess<correctGuess){
+        counter--;
+        showResponse(`Wrong. Your guess is too low. You have ${counter} more guesses`, 'Red')
+      } else if (userGuess>correctGuess){
+        counter--;
+        showResponse(`Wrong. Your guess is too high. You have ${counter} more guesses`, 'Red')
+      }
     }
-  }
 
+    if(counter===0 && userGuess !== correctGuess) {
+      showResponse(`!!!Game Over!!! The correct answer was ${correctGuess}`, 'Red');
+      resetGame();
+    }
 
+  
   ev.preventDefault();
 }
 
