@@ -17,7 +17,31 @@ let minimumNumber,
     maximumNumber;
 
 
+ //Generate the random min and max numbers
+ function generateNumbers(){
+  minimumNumber = Math.floor(Math.random() * 1) + 1,
+  maximumNumber = Math.floor(Math.random() * 100) + 1
+  console.log(minimumNumber, maximumNumber);
 
+  //output the dynamic numbers to the HTML
+  minNum.textContent = minimumNumber;
+  maxNum.textContent = maximumNumber;
+ }
+
+
+submitBtn.addEventListener('click', checkGuess);
+
+function checkGuess(ev){
+  generateNumbers();
+  let userGuess = guessInput.value;
+  console.log(userGuess);
+
+if(userGuess<minimumNumber || userGuess>maximumNumber) {
+  console.log('error');
+}
+
+  ev.preventDefault();
+}
 
 
 
