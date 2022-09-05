@@ -56,19 +56,10 @@ function resetGame(){
   newGameBtn.addEventListener('click', startNewGame);
 
   function startNewGame(ev){
-    // newGameBtn.style.display = 'none';
-    // guessInput.value = '';
-    // guessInput.disabled = false;
-    // submitBtn.disabled = false;
-
-    // counter = 4;
-    // paraMessage.textContent ='';
-    // correctGuess = Math.floor(Math.random() * 100) + 1;
     window.location.reload();
 
     ev.preventDefault();
   }
-
 }
 
 submitBtn.addEventListener('click', checkGuess);
